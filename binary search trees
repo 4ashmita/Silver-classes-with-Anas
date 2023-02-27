@@ -1,0 +1,75 @@
+public class Main {
+    static class node{
+        node left;
+        node right;
+        int key;
+    }
+    static node NewNode(int item){
+        node temp = new node();
+        temp.key = item;
+        temp.left = null;
+        temp.right = null;
+        return temp;
+    }
+    static node Insert(node n, int key){
+        if(n == null){
+            return NewNode(key);
+        }
+        if(key < n.key){
+            n.left = Insert(n.left,key);
+        }
+        else if(key > n.key){
+            n.right = Insert(n.right,key);
+        }
+        return n;
+    }
+    static void traversal(node n){
+        if(n != null){
+            traversal(n.right);
+            System.out.println(n.key);
+            traversal(n.left);
+        }
+    }
+
+    static node deletion(node root, int key){
+        if(root == null){
+            return root;
+        }
+        if(key < root.key){
+            root.left = deletion(root.left, key);
+        }
+        else if(key > root.key){
+            root.right = deletion(root.right, key);
+        }
+        else{
+            if(root.left == null){
+                return root.right;
+            }
+            else if (root.right == null){
+                return root.left;
+            }
+            root.key = min_value(root.right);
+            root.right = deletion(root.right,root.key);
+        }
+        return root;
+    }
+    static int min_value(node root){
+        int minv = root.key;
+        while (root.left != null) {
+            minv = root.left.key;
+            root = root.left;
+        }
+        return minv;
+
+    }
+    public static void main(String[] args){
+        node root = null;
+        root = Insert(root,5);
+        root = Insert(root,6);
+        root = Insert(root,3);
+        root = Insert(root,26);
+        root = Insert(root,2);
+        root = deletion(root, 5);
+        traversal(root);
+    }
+}
